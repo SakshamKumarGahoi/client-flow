@@ -1,0 +1,217 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"  // Can use "sqlite" for development
+  url      = env("DATABASE_URL")
+}
+
+// User model for authentication
+model User {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  password  String
+  name      String
+  company   String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  
+  // Relations
+  clients    Client[]
+  activities Activity[]
+  notes      Note[]
+}
+
+// Client model
+model Client {
+  id            String    @id @default(cuid())
+  companyName   String
+  contactPerson String
+  email         String
+  phone         String?
+  industry      String?
+  companySize   String?
+  website       String?
+  address       String?
+  status        ClientStatus @default(PENDING)
+  
+  // Relations
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  projects   Project[]
+  notes      Note[]
+  activities Activity[]
+  
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  
+  @@index([userId])
+  @@index([status])
+}
+
+// Project model
+model Project {
+  id          String    @id @default(cuid())
+  name        String
+  description String?
+  type        ProjectType
+  budget      Float?
+  startDate   DateTime?
+  deadline    DateTime?
+  status      ProjectStatus @default(PLANNING)
+  progress    Int       @default(0)
+  
+  // Relations
+  clientId    String
+  client      Client    @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  tasks       Task[]
+  invoices    Invoice[]
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  @@index([clientId])
+  @@index([status])
+}
+
+// Task model for project tasks
+model Task {
+  id          String    @id @default(cuid())
+  title       String
+  description String?
+  status      TaskStatus @default(TODO)
+  priority    Priority   @default(MEDIUM)
+  dueDate     DateTime?
+  completed   Boolean   @default(false)
+  
+  // Relations
+  projectId   String
+  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  @@index([projectId])
+}
+
+// Note model for client notes
+model Note {
+  id        String    @id @default(cuid())
+  content   String
+  
+  // Relations
+  clientId  String
+  client    Client    @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+  
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  
+  @@index([clientId])
+}
+
+// Activity log model
+model Activity {
+  id          String    @id @default(cuid())
+  type        ActivityType
+  description String
+  metadata    Json?
+  
+  // Relations
+  clientId    String?
+  client      Client?   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  
+  createdAt   DateTime  @default(now())
+  
+  @@index([userId])
+  @@index([clientId])
+}
+
+// Invoice model
+model Invoice {
+  id          String    @id @default(cuid())
+  number      String    @unique
+  amount      Float
+  status      InvoiceStatus @default(DRAFT)
+  dueDate     DateTime?
+  paidDate    DateTime?
+  items       Json
+  
+  // Relations
+  projectId   String
+  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  @@index([projectId])
+  @@index([status])
+}
+
+// Enums
+enum ClientStatus {
+  PENDING
+  ACTIVE
+  COMPLETED
+  ON_HOLD
+  ARCHIVED
+}
+
+enum ProjectStatus {
+  PLANNING
+  IN_PROGRESS
+  ACTIVE
+  REVIEW
+  COMPLETED
+  CANCELLED
+}
+
+enum ProjectType {
+  WEBSITE
+  WEBAPP
+  ECOMMERCE
+  LANDING_PAGE
+  REDESIGN
+  MOBILE_APP
+  CUSTOM
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  REVIEW
+  DONE
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum ActivityType {
+  CLIENT_CREATED
+  CLIENT_UPDATED
+  CLIENT_DELETED
+  PROJECT_CREATED
+  PROJECT_UPDATED
+  PROJECT_COMPLETED
+  TASK_CREATED
+  TASK_COMPLETED
+  NOTE_ADDED
+  INVOICE_SENT
+  PAYMENT_RECEIVED
+}
+
+enum InvoiceStatus {
+  DRAFT
+  SENT
+  PAID
+  OVERDUE
+  CANCELLED
+}

@@ -24,7 +24,10 @@ app.use("/api/auth", authRoutes);
 
 // Protected users route
 app.get("/api/users", auth, async (req, res) => {
-  const users = await prisma.user.findMany();
+  const users = await prisma.user.findMany({
+    select:
+    { id: true, email: true , name: true, createdAt: true }
+  });
   res.json(users);
 });
 

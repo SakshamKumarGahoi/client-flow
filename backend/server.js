@@ -15,8 +15,10 @@ app.use(
   cors({
     origin: [
       "http://localhost:3000",
-      "https://client-flow-five.vercel.app/", // later
+      "https://client-flow-five.vercel.app", // later
     ],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
 );

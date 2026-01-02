@@ -15,7 +15,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:3000",
-      "https://clientflow.vercel.app", // later
+      "https://client-flow-five.vercel.app/", // later
     ],
     credentials: true,
   })

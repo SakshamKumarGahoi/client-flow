@@ -1,6 +1,6 @@
 "use client";
 
-const API_URL = "https://clientflow-1sk4.onrender.com/api";
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 class ClientAPI {
   constructor() {

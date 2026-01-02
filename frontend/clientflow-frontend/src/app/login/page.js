@@ -1,27 +1,27 @@
 "use client";
 
-import { api } from "@/lib/api";
+import api from "@/lib/api";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function RegisterPage() {
+export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
 
-  const handleRegister = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      await api.register({ email, password });
+      await api.login(email, password);
       router.push("/dashboard");
     } catch {
-      alert("Registration failed");
+      alert("Login failed");
     }
   };
 
   return (
-    <form onSubmit={handleRegister}>
-      <h1>Register</h1>
+    <form onSubmit={handleLogin}>
+      <h1>Login</h1>
       <input
         placeholder="Email"
         value={email}
@@ -33,7 +33,7 @@ export default function RegisterPage() {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <button type="submit">Register</button>
+      <button type="submit">Login</button>
     </form>
   );
 }

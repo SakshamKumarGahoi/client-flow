@@ -1,8 +1,9 @@
 "use client";
-
+import { useRedirectIfAuthenticated } from "@/lib/redirectifAuth";
 import api from "@/lib/api";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+useRedirectIfAuthenticated();
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -35,5 +36,28 @@ export default function LoginPage() {
       />
       <button type="submit">Login</button>
     </form>
+  );
+}
+"use client";
+
+import Link from "next/link";
+
+export default function LoginPage() {
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="w-full max-w-md space-y-4">
+        {/* login form */}
+
+        <p className="text-sm text-center">
+          Don’t have an account?{" "}
+          <Link
+            href="/register"
+            className="text-blue-600 hover:underline"
+          >
+            Register
+          </Link>
+        </p>
+      </div>
+    </div>
   );
 }

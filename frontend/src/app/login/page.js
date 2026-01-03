@@ -1,11 +1,14 @@
 "use client";
+
 import { useRedirectIfAuthenticated } from "@/lib/redirectifAuth";
 import api from "@/lib/api";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-useRedirectIfAuthenticated();
+import Link from "next/link";
 
 export default function LoginPage() {
+  useRedirectIfAuthenticated();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
@@ -21,42 +24,42 @@ export default function LoginPage() {
   };
 
   return (
-    <form onSubmit={handleLogin}>
-      <h1>Login</h1>
-      <input
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button type="submit">Login</button>
-    </form>
-  );
-}
-
-import Link from "next/link";
-
-export default function LoginPage() {
-  return (
     <div className="min-h-screen flex items-center justify-center">
-      <div className="w-full max-w-md space-y-4">
-        {/* login form */}
+      <form
+        onSubmit={handleLogin}
+        className="w-full max-w-md space-y-4"
+      >
+        <h1 className="text-xl font-semibold">Login</h1>
+
+        <input
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="w-full border p-2 rounded"
+        />
+
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="w-full border p-2 rounded"
+        />
+
+        <button
+          type="submit"
+          className="w-full bg-black text-white py-2 rounded"
+        >
+          Login
+        </button>
 
         <p className="text-sm text-center">
           Don’t have an account?{" "}
-          <Link
-            href="/register"
-            className="text-blue-600 hover:underline"
-          >
+          <Link href="/register" className="text-blue-600 hover:underline">
             Register
           </Link>
         </p>
-      </div>
+      </form>
     </div>
   );
 }

@@ -2,29 +2,16 @@
 
 import api from "@/lib/api";
 import { useEffect, useState } from "react";
+import { useLogout } from "@/lib/auth";
 
 export default function DashboardPage() {
   const [users, setUsers] = useState([]);
+  const logout = useLogout();
 
   useEffect(() => {
-    api
-      .getUsers()
-      .then(setUsers)
-      .catch(() => {});
+    api.getUsers().then(setUsers).catch(() => {});
   }, []);
 
-  return (
-    <div>
-      <h1>Dashboard</h1>
-      <pre>{JSON.stringify(users, null, 2)}</pre>
-    </div>
-  );
-}
-
-
-import { logout } from "@/lib/auth";
-
-export default function DashboardPage() {
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
@@ -38,7 +25,9 @@ export default function DashboardPage() {
         </button>
       </div>
 
-      {/* dashboard content */}
+      <pre className="bg-gray-100 p-4 rounded">
+        {JSON.stringify(users, null, 2)}
+      </pre>
     </div>
   );
 }

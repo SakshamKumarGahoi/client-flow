@@ -38,7 +38,6 @@ export default function LoginPage() {
     </form>
   );
 }
-"use client";
 
 import Link from "next/link";
 

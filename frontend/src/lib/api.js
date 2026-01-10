@@ -28,6 +28,8 @@ class ClientAPI {
     });
 
     if (response.status === 401) {
+      localStorage.removeItem("token");
+      window.location.href = "/login";
       this.logout();
       throw new Error("Unauthorized");
     }

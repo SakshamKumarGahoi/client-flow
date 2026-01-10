@@ -1,0 +1,170 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* Recoleta font */
+@font-face {
+  font-family: "Recoleta";
+  src: url("/fonts/Recoleta-RegularDEMO.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: #C3C3E6;
+  color: var(--foreground);
+  font-family: "Recoleta", Helvetica, sans-serif;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-lines,
+  .animate-lines-slow {
+    animation: none !important;
+  }
+}
+.login-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #C3C3E6;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 380px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+}
+
+.login-card input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.google-btn {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background: white;
+  margin-bottom: 12px;
+  cursor: pointer;
+}
+
+.divider {
+  text-align: center;
+  font-size: 13px;
+  opacity: 0.6;
+  margin: 12px 0;
+}
+
+.login-btn {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  background: #87255B;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.switch-auth {
+  text-align: center;
+  margin-top: 16px;
+  font-size: 14px;
+}
+
+.switch-auth a {
+  color: #B370B0;
+}
+.login-card h1 {
+  color: #2b2b2b;
+  font-weight: 600;
+}
+
+.login-card p {
+  color: #6b6b6b;
+}
+.login-card input {
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+.login-card input:focus {
+  outline: none;
+  border-color: #B370B0;
+  box-shadow: 0 0 0 3px rgba(179, 112, 176, 0.2);
+}
+.login-btn {
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.login-btn:hover {
+  background: #7a1f50;
+}
+
+.login-btn:active {
+  transform: scale(0.98);
+}
+.google-btn {
+  font-weight: 500;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.google-btn:hover {
+  background: #f5f5f5;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+.login-card {
+  padding: 28px;
+}
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  background: #ffffff;
+  padding: 32px;
+  border-radius: 20px;
+  box-shadow:
+    0 30px 60px rgba(0, 0, 0, 0.12),
+    0 10px 20px rgba(0, 0, 0, 0.08);
+}
+
+.login-btn {
+  background: #87255B;
+  color: white;
+  font-weight: 500;
+}
+
+.google-btn {
+  font-weight: 500;
+}
+
+input {
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+input:focus {
+  outline: none;
+  border-color: #B370B0;
+  box-shadow: 0 0 0 3px rgba(179, 112, 176, 0.2);
+}

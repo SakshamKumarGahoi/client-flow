@@ -1,65 +1,38 @@
 "use client";
 
-import { useRedirectIfAuthenticated } from "@/lib/redirectifAuth";
-import api from "@/lib/api";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 export default function LoginPage() {
-  useRedirectIfAuthenticated();
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const router = useRouter();
-
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      await api.login(email, password);
-      router.push("/dashboard");
-    } catch {
-      alert("Login failed");
-    }
-  };
-
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <form
-        onSubmit={handleLogin}
-        className="w-full max-w-md space-y-4"
-      >
-        <h1 className="text-xl font-semibold">Login</h1>
+    <div className="login-wrapper">
+      <div className="login-card">
+        <h1 className="font-recoleta text-3xl mb-2">
+          Welcome back
+        </h1>
 
-        <input
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-full border p-2 rounded"
-        />
+        <p className="text-sm mb-6 opacity-80">
+          Sign in to continue
+        </p>
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full border p-2 rounded"
-        />
+        <button className="google-btn">
+          Continue with Google
+        </button>
 
-        <button
-          type="submit"
-          className="w-full bg-black text-white py-2 rounded"
-        >
+        <div className="divider">
+          — or continue with email —
+        </div>
+
+        <input placeholder="Email" />
+        <input type="password" placeholder="Password" />
+
+        <button className="login-btn">
           Login
         </button>
 
-        <p className="text-sm text-center">
-          Don’t have an account?{" "}
-          <Link href="/register" className="text-blue-600 hover:underline">
-            Register
-          </Link>
+        <p className="switch-auth">
+          Don’t have an account? <Link href="/register">Register</Link>
         </p>
-      </form>
+      </div>
     </div>
   );
 }

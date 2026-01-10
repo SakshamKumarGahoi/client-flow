@@ -16,6 +16,9 @@ export default function DashboardPage() {
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-semibold">Dashboard</h1>
+        <h1 className="font-recoleta text-4xl">
+             Test
+           </h1>
 
         <button
           onClick={logout}

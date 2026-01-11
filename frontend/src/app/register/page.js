@@ -2,57 +2,74 @@
 
 import Link from "next/link";
 
-
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import api from "@/lib/api";
 
 export default function RegisterPage() {
+  const router = useRouter();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+    try {
+      await api.register({email, password});
+      router.push("/login");
+    } catch (err) {
+      setError("Account already exists or invalid input");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className="auth-wrapper">
+    <div className="login-wrapper">
       <div className="login-card">
         <h1 className="font-recoleta text-3xl mb-2">
-          Create your account
+          Create account
         </h1>
 
         <p className="text-sm mb-6 opacity-80">
-          Get started in under a minute
+          Start managing your clients
         </p>
 
-        {/* Google */}
-        <button
-          type="button"
-          className="google-btn w-full mb-4 border bg-white py-2 rounded"
-        >
-          Sign up with Google
-        </button>
+        <form onSubmit={handleSubmit}>
+          <input
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
 
-        <div className="divider">
-          — or sign up with email —
-        </div>
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
 
-        <input
-          placeholder="Full name"
-          className="w-full mb-3 p-2 rounded border"
-        />
+          {error && (
+            <p className="text-sm text-red-500 mb-3">{error}</p>
+          )}
 
-        <input
-          placeholder="Email"
-          className="w-full mb-3 p-2 rounded border"
-        />
+          <button
+            type="submit"
+            className="login-btn"
+            disabled={loading}
+          >
+            {loading ? "Creating account..." : "Register"}
+          </button>
+        </form>
 
-        <input
-          type="password"
-          placeholder="Password"
-          className="w-full mb-4 p-2 rounded border"
-        />
-
-        <button className="login-btn w-full py-2 rounded">
-          Create account
-        </button>
-
-        <p className="text-sm text-center mt-4">
+        <p className="switch-auth">
           Already have an account?{" "}
-          <Link href="/login" className="accent-link">
-            Login
-          </Link>
+          <Link href="/login">Login</Link>
         </p>
       </div>
     </div>

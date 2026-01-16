@@ -8,21 +8,55 @@ const prisma = new PrismaClient();
 
 // Register
 router.post("/register", async (req, res) => {
-  const { email, password } = req.body;
+  try {
+    const { email, password, name, company } = req.body;
 
-  const hashedPassword = await bcrypt.hash(password, 10);
+    if (!email || !password || !name) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
 
-  const user = await prisma.user.create({
-    data: { email, password: hashedPassword },
-  });
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ error: "Invalid email format" });
+    }
 
-  const token = jwt.sign(
-    { userId: user.id },
-    process.env.JWT_SECRET,
-    { expiresIn: "7d" }
-  );
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+    if (!passwordRegex.test(password)) {
+      return res.status(400).json({
+        error:
+          "Password must be 8+ chars, include upper, lower & number",
+      });
+    }
 
-  res.json({ token });
+    const existingUser = await prisma.user.findUnique({
+      where: { email },
+    });
+    if (existingUser) {
+      return res.status(409).json({ error: "Email already registered" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const user = await prisma.user.create({
+      data: {
+        email,
+        password: hashedPassword,
+        name,
+        company,
+      },
+    });
+
+    const token = jwt.sign(
+      { userId: user.id },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    res.json({ token });
+  } catch (err) {
+    res.status(500).json({ error: "Server error" });
+  }
 });
 
 // Login

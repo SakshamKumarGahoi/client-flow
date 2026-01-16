@@ -40,43 +40,86 @@ export default function RegisterPage() {
         {error && <p className="error-text">{error}</p>}
 
         <form onSubmit={handleSubmit}>
-          <input
-            placeholder="Full name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
+  <input
+    placeholder="Full name"
+    value={name}
+    onChange={(e) => setName(e.target.value)}
+  />
 
-          <input
-            placeholder="Company (optional)"
-            value={company}
-            onChange={(e) => setCompany(e.target.value)}
-          />
+  <input
+    placeholder="Company (optional)"
+    value={company}
+    onChange={(e) => setCompany(e.target.value)}
+  />
 
-          <input
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+  <input
+    placeholder="Email"
+    value={email}
+    onChange={(e) => setEmail(e.target.value)}
+  />
 
-          <div className="password-field">
-            <input
-              type={showPassword ? "text" : "password"}
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+  {/* PASSWORD FIELD */}
+  <div className="password-field">
+    <div className="password-input-wrapper">
+      <input
+        type={showPassword ? "text" : "password"}
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+
+      <button
+        type="button"
+        onClick={() => setShowPassword(!showPassword)}
+        aria-label="Toggle password visibility"
+      >
+        {showPassword ? (
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path
+              d="M3 3l18 18M10.6 10.6A3 3 0 0012 15a3 3 0 002.4-4.4"
+              stroke="#555"
+              strokeWidth="2"
+              strokeLinecap="round"
             />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? "Hide" : "Show"}
-            </button>
-          </div>
+            <path
+              d="M6.5 6.5C4.6 7.8 3.2 9.8 2 12c2.5 4.5 7 7 10 7 1.1 0 2.3-.3 3.5-.9"
+              stroke="#555"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+          </svg>
+        ) : (
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path
+              d="M1.5 12s4-7.5 10.5-7.5S22.5 12 22.5 12s-4 7.5-10.5 7.5S1.5 12 1.5 12z"
+              stroke="#555"
+              strokeWidth="2"
+            />
+            <circle cx="12" cy="12" r="3" stroke="#555" strokeWidth="2" />
+          </svg>
+        )}
+      </button>
+    </div>
 
-          <button disabled={loading}>
-            {loading ? "Creating..." : "Register"}
-          </button>
-        </form>
+    <ul className="password-rules">
+      <li className={password.length >= 8 ? "valid" : ""}>8+ characters</li>
+      <li className={/[A-Z]/.test(password) ? "valid" : ""}>
+        Uppercase letter
+      </li>
+      <li className={/\d/.test(password) ? "valid" : ""}>Number</li>
+      <li
+        className={/[!@#$%^&*(),.?":{}|<>]/.test(password) ? "valid" : ""}
+      >
+        Special character
+      </li>
+    </ul>
+  </div>
+
+  {/* SUBMIT BUTTON — OUTSIDE password-field */}
+  <button type="submit" disabled={loading}>
+    {loading ? "Creating..." : "Register"}
+  </button>
+</form>
 
         <p className="switch-auth">
           Already have an account? <Link href="/login">Login</Link>

@@ -1,36 +1,15 @@
 "use client";
 
-import api from "@/lib/api";
-import { useEffect, useState } from "react";
-import { useLogout } from "@/lib/auth";
-
 export default function DashboardPage() {
-  const [users, setUsers] = useState([]);
-  const logout = useLogout();
-
-  useEffect(() => {
-    api.getUsers().then(setUsers).catch(() => {});
-  }, []);
-
   return (
-    <div className="p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-semibold">Dashboard</h1>
-        <h1 className="font-recoleta text-4xl">
-             Test
-           </h1>
+    <div>
+      <h1 className="dashboard-title">Dashboard</h1>
 
-        <button
-          onClick={logout}
-          className="px-4 py-2 rounded-md bg-red-500 text-white hover:bg-red-600"
-        >
-          Logout
-        </button>
+      <div className="stats-grid">
+        <div className="stat-card">Clients<br /><strong>12</strong></div>
+        <div className="stat-card">Projects<br /><strong>7</strong></div>
+        <div className="stat-card">Invoices<br /><strong>₹45,000</strong></div>
       </div>
-
-      <pre className="bg-gray-100 p-4 rounded">
-        {JSON.stringify(users, null, 2)}
-      </pre>
     </div>
   );
 }

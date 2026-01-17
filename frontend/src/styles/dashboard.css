@@ -81,3 +81,26 @@
 .stat-card strong {
   font-size: 22px;
 }
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.stat-card {
+  background: #fff;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.stat-card h4 {
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.stat-card p {
+  font-size: 28px;
+  font-weight: 700;
+  color: #87255b;
+}

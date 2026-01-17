@@ -1,14 +1,32 @@
 "use client";
 
-export default function DashboardPage() {
-  return (
-    <div>
-      <h1 className="dashboard-title">Dashboard</h1>
+import { useEffect, useState } from "react";
+import api from "@/lib/api";
 
-      <div className="stats-grid">
-        <div className="stat-card">Clients<br /><strong>12</strong></div>
-        <div className="stat-card">Projects<br /><strong>7</strong></div>
-        <div className="stat-card">Invoices<br /><strong>₹45,000</strong></div>
+export default function DashboardPage() {
+  const [stats, setStats] = useState(null);
+
+  useEffect(() => {
+    api.getDashboardStats().then(setStats);
+  }, []);
+
+  if (!stats) return <p>Loading...</p>;
+
+  return (
+    <div className="dashboard-grid">
+      <div className="stat-card">
+        <h4>Clients</h4>
+        <p>{stats.clients}</p>
+      </div>
+
+      <div className="stat-card">
+        <h4>Projects</h4>
+        <p>{stats.projects}</p>
+      </div>
+
+      <div className="stat-card">
+        <h4>Revenue</h4>
+        <p>₹{stats.revenue}</p>
       </div>
     </div>
   );

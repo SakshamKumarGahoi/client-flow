@@ -1,26 +1,30 @@
-// routes/dashboard.js
 import express from "express";
 import auth from "../middleware/auth.js";
-import prisma from "../prisma.js";
+import { PrismaClient } from "@prisma/client";
 
 const router = express.Router();
+const prisma = new PrismaClient();
 
 router.get("/stats", auth, async (req, res) => {
   const userId = req.user.userId;
 
-  const [clients, projects, invoices] = await Promise.all([
-    prisma.client.count({ where: { userId } }),
-    prisma.project.count({ where: { userId } }),
-    prisma.invoice.aggregate({
-      where: { userId },
-      _sum: { amount: true },
-    }),
-  ]);
+  const clientsCount = await prisma.client.count({
+    where: { userId },
+  });
+
+  const projectsCount = await prisma.project.count({
+    where: { userId },
+  });
+
+  const invoicesSum = await prisma.invoice.aggregate({
+    where: { userId },
+    _sum: { amount: true },
+  });
 
   res.json({
-    clients,
-    projects,
-    revenue: invoices._sum.amount || 0,
+    clients: clientsCount,
+    projects: projectsCount,
+    revenue: invoicesSum._sum.amount || 0,
   });
 });
 

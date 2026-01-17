@@ -47,3 +47,4 @@ app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 app.get("/api/debug", (req, res) => {
   res.json({ message: "API routing works" });
 });
+app.use("/api/dashboard", dashboardRoutes);

@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { PrismaClient } from "@prisma/client";
-
+import dashboardRoutes from "./routes/dashboard.js";
 import authRoutes from "./routes/auth.js";
 import auth from "./middleware/auth.js";
 

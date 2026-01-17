@@ -70,6 +70,11 @@ class ClientAPI {
   return this.request("/users");
 }
 
+getDashboardStats() {
+  return this.request("/dashboard/stats");
+}
+
+
 }
 
 const api = new ClientAPI();

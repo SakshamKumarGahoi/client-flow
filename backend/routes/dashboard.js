@@ -6,18 +6,26 @@ const router = express.Router();
 const prisma = new PrismaClient();
 
 router.get("/stats", auth, async (req, res) => {
-  const userId = req.user.userId;
+  const userId = req.userId;
 
   const clientsCount = await prisma.client.count({
     where: { userId },
   });
 
   const projectsCount = await prisma.project.count({
-    where: { userId },
+    where: {
+      client: {
+        userId,
+      },
+    },
   });
 
   const invoicesSum = await prisma.invoice.aggregate({
-    where: { userId },
+    where: {
+      client: {
+        userId,
+      },
+    },
     _sum: { amount: true },
   });
 
@@ -27,5 +35,6 @@ router.get("/stats", auth, async (req, res) => {
     revenue: invoicesSum._sum.amount || 0,
   });
 });
+
 
 export default router;

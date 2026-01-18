@@ -9,14 +9,14 @@ export default function auth(req, res, next) {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // ✅ FIX
+    // ✅ STANDARDIZED SHAPE
     req.user = {
-      userId: decoded.userId,
+      id: decoded.userId,
       email: decoded.email,
     };
 
     next();
-  } catch {
-    res.sendStatus(401);
+  } catch (err) {
+    return res.sendStatus(401);
   }
 }

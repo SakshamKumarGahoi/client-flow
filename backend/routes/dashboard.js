@@ -7,12 +7,16 @@ const prisma = new PrismaClient();
 
 router.get("/stats", auth, async (req, res) => {
   try {
-    const userId = req.userId; // ✅ FIXED
+    const userId = req.user.id; // from your fixed auth middleware
 
+    // 1. Clients owned by user
     const clientsCount = await prisma.client.count({
-      where: { userId },
+      where: {
+        userId,
+      },
     });
 
+    // 2. Projects via client → user
     const projectsCount = await prisma.project.count({
       where: {
         client: {
@@ -21,6 +25,7 @@ router.get("/stats", auth, async (req, res) => {
       },
     });
 
+    // 3. Revenue via invoice → project → client → user
     const invoicesSum = await prisma.invoice.aggregate({
       where: {
         project: {
@@ -37,11 +42,11 @@ router.get("/stats", auth, async (req, res) => {
     res.json({
       clients: clientsCount,
       projects: projectsCount,
-      revenue: invoicesSum._sum.amount || 0,
+      revenue: invoicesSum._sum.amount ?? 0,
     });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Dashboard stats failed" });
+    console.error("Dashboard stats error:", err);
+    res.status(500).json({ error: "Failed to load dashboard stats" });
   }
 });
 

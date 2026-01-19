@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { PrismaClient } from "@prisma/client";
-
+import clientRoutes from "./routes/clients.js";
 import dashboardRoutes from "./routes/dashboard.js";
 import authRoutes from "./routes/auth.js";
 import auth from "./middleware/auth.js";
@@ -24,7 +24,7 @@ app.use(
 );
 
 app.use(express.json());
-
+app.use("/api/clients", clientRoutes);
 /* Health */
 app.get("/", (req, res) => {
   res.send("ClientFlow backend running ✅");

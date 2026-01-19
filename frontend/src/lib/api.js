@@ -60,6 +60,36 @@ class ClientAPI {
   getDashboardStats() {
     return this.request("/dashboard/stats");
   }
+
+  // CLIENTS
+getClients() {
+  return this.request("/clients");
+}
+
+getClient(id) {
+  return this.request(`/clients/${id}`);
+}
+
+createClient(data) {
+  return this.request("/clients", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+}
+
+updateClient(id, data) {
+  return this.request(`/clients/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(data),
+  });
+}
+
+deleteClient(id) {
+  return this.request(`/clients/${id}`, {
+    method: "DELETE",
+  });
+}
+
 }
 
 export default new ClientAPI();
